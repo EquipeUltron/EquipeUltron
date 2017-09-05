@@ -1,0 +1,458 @@
+#define MOTOR_D OUT_C
+#define MOTOR_E OUT_A
+#define DISTANCIA 7
+#define SENSOR_ULTRA SensorUS(IN_4)
+
+#define cinza 400
+
+#define H_verde_esquerdo 135	// valor maior que definido == verde
+#define H_verde_direito 129
+
+#define V_branco_esquerdo 250
+#define V_branco_direito 250// branco maio0r que v_branco
+
+#define V_preto_esquerdo 110//menor que o v_preto
+#define v_preto_direito 120
+
+#define S_direito 45//
+#define S_esquerdo 50//
+
+float s_direito;
+float v_direito;
+float h_direito;
+
+//sensor direito porta 2
+void hsv_direito()
+	{
+
+		float max;
+		float mini;
+  		float valGreen;
+		float valRed;
+		float valBlue;
+		
+
+
+		valGreen= ColorSensorValue(S2, INPUT_GREEN);
+		valRed = ColorSensorValue(S2, INPUT_RED);
+		valBlue =  ColorSensorValue(S2, INPUT_BLUE);
+
+		//define valor maximo
+		if( (valGreen > valRed) && (valGreen > valBlue) )
+		{
+			max = valGreen;
+		}
+		else if ( (valRed > valGreen) && (valRed > valBlue) )
+		{
+			max = valRed;
+		}
+		else if( (valBlue > valRed) && (valBlue > valGreen) )
+		{
+			max = valBlue;
+		}
+
+		//define valor minimo
+		if( (valGreen < valRed) && (valGreen < valBlue) )
+		{
+			mini = valGreen;
+		}
+		else if ( (valRed < valGreen) && (valRed < valBlue) ) 
+		{
+			mini = valRed;
+		}
+		else if( (valBlue < valRed) && (valBlue < valGreen) )
+		{
+			mini = valBlue;
+		}
+		
+		s_direito = ((max-mini)/max) *100 ;
+		v_direito = max;
+		//define H
+		if ( (max == valRed) && (valGreen >= valBlue) ) 
+		{
+			h_direito =60 *(valGreen - valBlue) /( max-mini) + 0;
+		}
+		else if ( (max == valRed) && (valGreen < valBlue) ) 
+		{
+			h_direito =60 *(valGreen - valBlue)/(max-mini )+ 360;
+		}
+		else if ( max = valGreen )
+		{
+			h_direito =60 *(valBlue - valRed) /(max-mini) + 120;
+		}
+		else
+		{
+			h_direito =60 *(valRed - valGreen) /(max-mini) + 240;
+		}
+	}
+ // diz se o sensor direito é preto
+	bool sensor_direito_preto()
+	{
+		if     (v_direito < v_preto_direito ) 
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	// diz se o sensor direito é branco
+	bool sensor_direito_branco()
+	{
+		if   (v_direito > V_branco_direito)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	// diz se o sensor direito é verde
+bool sensor_direito_verde()
+	{
+		if ( ( s_direito > S_direito ) &&  (h_direito > H_verde_direito) )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+float s_esquerdo;
+float v_esquerdo;
+float h_esquerdo;
+// porta 1
+
+void hsv_esquerdo()
+	{
+
+		float max;
+		float mini;
+  		float valGreen;
+		float valRed;
+		float valBlue;
+		
+
+		valGreen= ColorSensorValue(S1, INPUT_GREEN);
+		valRed = ColorSensorValue(S1, INPUT_RED);
+		valBlue =  ColorSensorValue(S1, INPUT_BLUE);
+		//define valor maximo
+		if( (valGreen > valRed) && (valGreen > valBlue) )
+		{
+			max = valGreen;
+		}
+		else if ( (valRed > valGreen) && (valRed > valBlue) )
+		{
+			max = valRed;
+		}
+		else if( (valBlue > valRed) && (valBlue > valGreen) )
+		{
+			max = valBlue;
+		}
+
+		//define valor minimo
+		if( (valGreen < valRed) && (valGreen < valBlue) )
+		{
+			mini = valGreen;
+		}
+		else if ( (valRed < valGreen) && (valRed < valBlue) ) 
+		{
+			mini = valRed;
+		}
+		else if( (valBlue < valRed) && (valBlue < valGreen) )
+		{
+			mini = valBlue;
+		}
+		
+		s_esquerdo = ((max-mini)/max) *100 ;
+		v_esquerdo = max;
+		//define H
+		if ( (max == valRed) && (valGreen >= valBlue) ) 
+		{
+			h_esquerdo =60 *(valGreen - valBlue) /( max-mini) + 0;
+		}
+		else if ( (max == valRed) && (valGreen < valBlue) ) 
+		{
+			h_esquerdo =60 *(valGreen - valBlue)/(max-mini )+ 360;
+		}
+		else if ( max = valGreen )
+		{
+			h_esquerdo =60 *(valBlue - valRed) /(max-mini) + 120;
+		}
+		else
+		{
+			h_esquerdo =60 *(valRed - valGreen) /(max-mini) + 240;
+		}
+	}
+	// diz se o sensor esquerdo é preto
+bool sensor_esquerdo_preto()
+	{
+	 	if    (v_esquerdo < V_preto_esquerdo) 
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	// diz se o sensor esquerdo é branco
+	bool sensor_esquerdo_branco()
+	{
+		if   (v_esquerdo > V_branco_esquerdo) 
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	// diz se o sensor esquerdo é verde
+	bool sensor_esquerdo_verde()
+	{
+		if  ( ( s_esquerdo > S_esquerdo) && (h_esquerdo > H_verde_esquerdo) )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+
+
+bool desviar_obstaculo()
+	{
+		if (SENSOR_ULTRA <= DISTANCIA)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+void desviando_obstaculo()
+	{
+		
+
+
+		Off(OUT_AC);
+		Wait(400);
+
+		
+
+		OnFwd(MOTOR_E,40);
+		OnRev(MOTOR_D,40);
+		Wait(1650);
+
+		OnFwd(MOTOR_D,40);
+		OnFwd(MOTOR_E,40);
+		Wait(2250);
+		
+		OnFwd(MOTOR_D,40);
+		OnRev(MOTOR_E,40);
+		Wait(1500);
+				  
+		OnFwd(MOTOR_D,40);
+		OnFwd(MOTOR_E,40);
+		Wait(3470);
+				
+		
+		OnFwd(MOTOR_D,40);
+		OnRev(MOTOR_E,40);
+		Wait(1500);
+
+		OnFwd(MOTOR_D,40);
+		OnFwd(MOTOR_E,40);
+		Wait (2100); 
+
+		OnRev(MOTOR_D,40);
+		OnFwd(MOTOR_E,40);
+		Wait(1650);
+
+/*		while ( (sensor_direito_branco()) || (sensor_direito_preto()) )
+		{
+			if ( (sensor_esquerdo_preto()) && (sensor_direito_branco()) )
+			{
+				//virar_esquerda();
+				OnFwd(MOTOR_D,95);
+		
+				OnRev(MOTOR_E,35);
+				break;
+			}
+			else if ( (sensor_esquerdo_branco()) && (sensor_direito_preto()) )
+			{
+				//virar_direita();
+				OnRev(MOTOR_D,35);
+				OnFwd(MOTOR_E,95);
+				break;
+			}
+			else if ( (sensor_esquerdo_branco()) && (sensor_direito_branco()) )
+			{
+				//re();
+				OnRev(MOTOR_E,40);
+				OnRev(MOTOR_D,40);
+				
+				break;
+			}
+			else if ( (sensor_direito_preto()) && (sensor_esquerdo_preto()) ) 
+			{
+				Off(MOTOR_D);
+				Off(MOTOR_E);
+				break;
+			}
+		
+		}
+
+
+
+		Off(MOTOR_D);
+		Off(MOTOR_E);
+		Wait(10000);
+*/
+
+
+	}
+
+
+	void seguir()
+	{
+		OnFwd(MOTOR_D,40);
+		OnFwd(MOTOR_E,40);
+		
+
+	}
+
+	void virar_esquerda()
+	{
+		OnRev(MOTOR_E,90);
+		
+		OnFwd(MOTOR_D,75);
+
+		
+		//Wait(200);
+	}
+	void virar_direita()
+	{	
+
+
+	OnRev(MOTOR_D,90);
+		OnFwd(MOTOR_E,75);
+	}
+	void virar_esquerda_verde()
+	{
+		OnFwd(MOTOR_D,50);
+		OnFwd(MOTOR_E,50);
+		Wait(450);
+		OnFwd(MOTOR_D,40);
+		OnRev(MOTOR_E,40);
+		Wait(1300);
+		
+	}
+	void virar_direita_verde()
+	{
+		OnFwd(MOTOR_D,50);
+		OnFwd(MOTOR_E,50);
+		Wait(450);
+		OnFwd(MOTOR_E,40);
+		OnRev(MOTOR_D,40);
+		Wait(1300);
+	}
+	void re ()
+	{
+		OnRev(MOTOR_E,40);
+		OnRev(MOTOR_D,40);
+		Wait(10);
+
+	}
+
+
+
+task main()
+{
+ SetSensorColorFull(S1) ;
+ SetSensorColorFull(S2) ;
+
+	
+	while(true)
+  {		
+  	SetSensorLowspeed(IN_4);
+    SetSensorColorFull(S1) ;
+    SetSensorColorFull(S2) ;//define os valores do sensor direito
+  		hsv_direito();
+  		//se sensor direito == preto
+  		sensor_direito_preto();
+  		//se sensor direito == branco
+  		sensor_direito_branco();
+  		//se sensor direito == verde
+  		sensor_direito_verde();
+
+  		//define os valores do sensor esquerdo
+  		hsv_esquerdo();
+  		//se sensor direito == preto
+  		sensor_esquerdo_preto();
+  		//se sensor direito == branco
+  		sensor_esquerdo_branco();
+  		//se sensor direito == preto
+  		sensor_esquerdo_verde();
+
+
+
+  		if ((v_direito > cinza)&&(v_esquerdo > cinza))
+		{
+			OnFwd(MOTOR_D,80);
+			OnFwd(MOTOR_E,80);
+			Wait(700);
+		}
+	
+  		    else if ( desviar_obstaculo() )
+		{
+			desviando_obstaculo();
+		}
+		
+		else if (sensor_esquerdo_verde())
+		{
+			virar_esquerda_verde();
+		}
+		else if (sensor_direito_verde())
+		{
+			virar_direita_verde();
+		}
+		
+		else if ( (sensor_esquerdo_preto()) && (sensor_direito_branco()) )
+		{
+			virar_esquerda();
+			 if ( (sensor_esquerdo_branco()) && (sensor_direito_preto()) )
+			{
+			virar_direita();
+			Wait(350);
+			}
+		}
+		else if ( (sensor_esquerdo_branco()) && (sensor_direito_preto()) )
+		{
+			virar_direita();
+			if ( (sensor_esquerdo_preto()) && (sensor_direito_branco()) )
+			{
+			virar_esquerda();
+			Wait(350);
+			}
+		}
+		
+		else if (sensor_esquerdo_branco() && sensor_direito_branco())
+		{
+		seguir();
+		}
+		
+	
+		
+
+  }
+} 
