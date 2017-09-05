@@ -1,0 +1,185 @@
+
+
+
+
+
+
+float s_direito;
+float v_direito;
+float h_direito;
+void hsv_direito()
+	{
+
+		float max;
+		float mini;
+  		float valGreen;
+		float valRed;
+		float valBlue;
+		
+
+		valGreen= ColorSensorValue(S2, INPUT_GREEN);
+		valRed = ColorSensorValue(S2, INPUT_RED);
+		valBlue =  ColorSensorValue(S2, INPUT_BLUE);
+		//define valor maximo
+		if( (valGreen > valRed) && (valGreen > valBlue) )
+		{
+			max = valGreen;
+		}
+		else if ( (valRed > valGreen) && (valRed > valBlue) )
+		{
+			max = valRed;
+		}
+		else if( (valBlue > valRed) && (valBlue > valGreen) )
+		{
+			max = valBlue;
+		}
+
+		//define valor minimo
+		if( (valGreen < valRed) && (valGreen < valBlue) )
+		{
+			mini = valGreen;
+		}
+		else if ( (valRed < valGreen) && (valRed < valBlue) ) 
+		{
+			mini = valRed;
+		}
+		else if( (valBlue < valRed) && (valBlue < valGreen) )
+		{
+			mini = valBlue;
+		}
+		
+		s_direito = ((max-mini)/max) *100 ;
+		v_direito = max;
+		//define H
+		if ( (max == valRed) && (valGreen >= valBlue) ) 
+		{
+			h_direito =60 *(valGreen - valBlue) /( max-mini) + 0;
+		}
+		else if ( (max == valRed) && (valGreen < valBlue) ) 
+		{
+			h_direito =60 *(valGreen - valBlue)/(max-mini )+ 360;
+		}
+		else if ( max = valGreen )
+		{
+			h_direito =60 *(valBlue - valRed) /(max-mini) + 120;
+		}
+		else
+		{
+			h_direito =60 *(valRed - valGreen) /(max-mini) + 240;
+		}
+		
+		// imprime na tela os valores do sensor direito 
+		/*TextOut(0,60,"sensor direito");
+		NumOut(10,50,h_direito);
+		NumOut(20,50,s_direito);
+		NumOut(30,50,v_direito);
+		Wait(100);
+		ClearScreen();*/
+   	
+	}
+	float s_esquerdo;
+	float v_esquerdo;
+	float h_esquerdo;
+
+	void hsv_esquerdo()
+	{
+
+		float max;
+		float mini;
+  		float valGreen;
+		float valRed;
+		float valBlue;
+		
+
+		valGreen= ColorSensorValue(S1, INPUT_GREEN);
+		valRed = ColorSensorValue(S1,INPUT_RED);
+		valBlue =  ColorSensorValue(S1, INPUT_BLUE);
+		//define valor maximo
+		if( (valGreen > valRed) && (valGreen > valBlue) )
+		{
+			max = valGreen;
+		}
+		else if ( (valRed > valGreen) && (valRed > valBlue) )
+		{
+			max = valRed;
+		}
+		else if( (valBlue > valRed) && (valBlue > valGreen) )
+		{
+			max = valBlue;
+		}
+
+		//define valor minimo
+		if( (valGreen < valRed) && (valGreen < valBlue) )
+		{
+			mini = valGreen;
+		}
+		else if ( (valRed < valGreen) && (valRed < valBlue) ) 
+		{
+			mini = valRed;
+		}
+		else if( (valBlue < valRed) && (valBlue < valGreen) )
+		{
+			mini = valBlue;
+		}
+		
+		s_esquerdo = ((max-mini)/max) *100 ;
+		v_esquerdo = max;
+		//define H
+		if ( (max == valRed) && (valGreen >= valBlue) ) 
+		{
+			h_esquerdo =60 *(valGreen - valBlue) /( max-mini) + 0;
+		}
+		else if ( (max == valRed) && (valGreen < valBlue) ) 
+		{
+			h_esquerdo =60 *(valGreen - valBlue)/(max-mini )+ 360;
+		}
+		else if ( max = valGreen )
+		{
+			h_esquerdo =60 *(valBlue - valRed) /(max-mini) + 120;
+		}
+		else
+		{
+			h_esquerdo =60 *(valRed - valGreen) /(max-mini) + 240;
+		}
+
+
+
+		/*TextOut(0,40,"sensor esquerdo");
+		NumOut(10,25,h_esquerdo);
+		NumOut(20,25,s_esquerdo);
+		NumOut(30,25,v_esquerdo);
+		Wait(100);
+		ClearScreen();*/
+	}
+
+
+
+	
+task main()
+{
+		
+	
+	  while(true)
+		{
+		SetSensorColorFull(S1) ;
+ 		SetSensorColorFull(S2) ;
+		hsv_direito();
+		hsv_esquerdo();
+
+		TextOut(0,25,"sensor esquerdo");
+		NumOut(0,15,h_esquerdo );
+		NumOut(30,0,s_esquerdo);
+		NumOut(70,0,v_esquerdo);
+		TextOut(0,60,"sensor direito");
+		NumOut(0,50,h_direito );
+		NumOut(20,40,s_direito);
+		NumOut(70,40,v_direito);
+		Wait(300);
+		ClearScreen();
+
+
+		
+		}
+		
+ 
+} 
