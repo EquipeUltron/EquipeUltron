@@ -4,7 +4,7 @@
 #define SENSOR_ULTRA SensorUS(IN_4)
 
 #define cinza 400
-
+//testando, codigo testado ;)
 #define H_verde_esquerdo 135	// valor maior que definido == verde
 #define H_verde_direito 129
 
